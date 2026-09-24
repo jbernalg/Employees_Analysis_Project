@@ -1,6 +1,7 @@
 # Análisis y Predicción del Desempeño de Empleados
 
-Proyecto de ciencia de datos sobre un dataset de aproximadamente 15.400 empleados de una empresa, que abarca limpieza de datos, análisis exploratorio (EDA) y modelado predictivo para identificar qué factores se asocian al cumplimiento de KPIs y para predecir si un empleado los cumplirá.
+1. ¿Qué factores se asocian al cumplimiento de KPIs por parte de los empleados?
+2. ¿Es posible predecir si un empleado cumplirá sus KPIs?
 
 ## Tabla de contenido
 
@@ -18,38 +19,36 @@ Proyecto de ciencia de datos sobre un dataset de aproximadamente 15.400 empleado
 
 ## Descripción del proyecto
 
-Este proyecto analiza datos de recursos humanos de una empresa (departamento, región, educación, género, canal de reclutamiento, entrenamientos, edad, antigüedad, premios, puntaje de capacitación, etc.) para entender qué caracteriza a los empleados que cumplen sus KPIs y para construir un modelo capaz de predecirlo. El flujo de trabajo sigue un pipeline clásico de ciencia de datos: **limpieza → análisis exploratorio → modelado predictivo**, documentado en tres notebooks de Jupyter independientes pero secuenciales.
+Este proyecto analiza datos de recursos humanos de una empresa (departamento, región, educación, género, canal de reclutamiento, entrenamientos, edad, antigüedad, premios, puntaje de capacitación, etc.) para entender qué caracteriza a los empleados que cumplen sus KPIs y para construir un modelo capaz de predecirlo. El flujo de trabajo sigue un pipeline de ciencia de datos: **limpieza → análisis exploratorio → modelado predictivo**, documentado en tres notebooks de Jupyter independientes pero secuenciales.
 
 ## Objetivos
 
-- Diagnosticar y tratar de forma rigurosa los valores faltantes del dataset original.
-- Explorar la composición de la fuerza laboral y las relaciones entre variables demográficas, organizacionales y de desempeño.
 - Identificar los factores más asociados al cumplimiento de KPIs (`KPIs_met_more_than_80`).
 - Construir y comparar modelos de clasificación binaria capaces de predecir si un empleado cumplirá más del 80% de sus KPIs.
 - Traducir los hallazgos en conclusiones accionables para el negocio.
 
 ## Dataset
 
-- **Fuente**: `employees_final_dataset.csv` (dataset original, 17.416 registros).
-- **Salida limpia**: `employees_cleaned.csv` (15.416 registros, generado por [01_limpieza_datos.ipynb](01_limpieza_datos.ipynb)).
+- **Fuente**: [data/employees_final_dataset.csv](data/employees_final_dataset.csv) (dataset original, 17.416 registros).
+- **Salida limpia**: [data/employees_cleaned.csv](data/employees_cleaned.csv) (15.416 registros, generado por [Notebooks/01_limpieza_datos.ipynb](Notebooks/01_limpieza_datos.ipynb)).
 - **Variables principales**: `department`, `region`, `education`, `gender`, `recruitment_channel`, `no_of_trainings`, `age`, `previous_year_rating`, `length_of_service`, `KPIs_met_more_than_80`, `awards_won`, `avg_training_score`.
 - **Variable objetivo**: `KPIs_met_more_than_80` — indica si el empleado cumplió más del 80% de sus KPIs (1) o no (0).
 
 ## Metodología
 
-1. **Limpieza de datos** ([01_limpieza_datos.ipynb](01_limpieza_datos.ipynb))
+1. **Limpieza de datos** ([Notebooks/01_limpieza_datos.ipynb](Notebooks/01_limpieza_datos.ipynb))
    - Análisis exhaustivo de valores faltantes: estadística descriptiva, patrones de concentración por variable, análisis de intervalos consecutivos y visualización de la distribución de missing.
    - Los valores faltantes se concentran en `education` (4.4%) y `previous_year_rating` (7.82%), están dispersos (no agrupados en regiones del dataframe) y no están correlacionados entre sí.
    - Dado que el porcentaje global de valores faltantes es bajo (1.03%), se aplica eliminación de registros incompletos.
    - Tratamiento adicional de la variable objetivo y exportación del dataset limpio.
 
-2. **Análisis exploratorio (EDA)** ([02_analisis_exploratorio.ipynb](02_analisis_exploratorio.ipynb))
+2. **Análisis exploratorio (EDA)** ([Notebooks/02_analisis_exploratorio.ipynb](Notebooks/02_analisis_exploratorio.ipynb))
    - Distribución de variables demográficas (género, edad, canal de reclutamiento, educación, región, departamento).
    - Análisis del cumplimiento de KPIs, puntaje de capacitación y premios, desagregados por departamento, género y edad.
    - Foco especial en el departamento Sales & Marketing (el más numeroso).
    - Matriz de correlación y análisis bivariado/multivariado entre variables numéricas y categóricas.
 
-3. **Modelado predictivo** ([03_modelado.ipynb](03_modelado.ipynb))
+3. **Modelado predictivo** ([Notebooks/03_modelado.ipynb](Notebooks/03_modelado.ipynb))
    - Preprocesamiento: eliminación de variables poco relevantes, codificación de variables categóricas (`LabelEncoder` para binarias, `OneHotEncoder` para `education`), selección de las 5 features más predictivas con `SelectKBest` (f_regression), split entrenamiento/prueba (80/20) y normalización con `StandardScaler`.
    - Modelos entrenados: **Regresión Logística** (línea base para clasificación binaria) y un **modelo de Apilamiento (Stacking)** que combina `DecisionTreeClassifier` y `SVC` como estimadores base con regresión logística como meta-modelo.
    - Evaluación con exactitud, precisión, recall, F1-score, matriz de confusión, curva precisión-recall, curva ROC/AUC y validación cruzada de 10 folds.
@@ -58,12 +57,16 @@ Este proyecto analiza datos de recursos humanos de una empresa (departamento, re
 
 ```
 Employees_Analysis_Project/
-├── 01_limpieza_datos.ipynb          # Limpieza y tratamiento de valores faltantes
-├── 02_analisis_exploratorio.ipynb   # EDA e insights de negocio
-├── 03_modelado.ipynb                # Preprocesamiento, modelado y evaluación
-├── utils.ipynb                      # Funciones auxiliares para análisis de valores faltantes
-├── employees_final_dataset.csv      # Dataset original (crudo)
-├── employees_cleaned.csv            # Dataset limpio (salida de 01_limpieza_datos.ipynb)
+├── Notebooks/
+│   ├── 01_limpieza_datos.ipynb          # Limpieza y tratamiento de valores faltantes
+│   ├── 02_analisis_exploratorio.ipynb   # EDA e insights de negocio
+│   ├── 03_modelado.ipynb                # Preprocesamiento, modelado y evaluación
+│   └── utils.ipynb                      # Funciones auxiliares para análisis de valores faltantes
+├── data/
+│   ├── employees_final_dataset.csv      # Dataset original (crudo)
+│   └── employees_cleaned.csv            # Dataset limpio (salida de 01_limpieza_datos.ipynb)
+├── outputs/                             # Gráficas exportadas desde 02_analisis_exploratorio.ipynb (.png)
+├── requirements.txt                     # Dependencias del proyecto
 └── README.md
 ```
 
@@ -71,25 +74,33 @@ Employees_Analysis_Project/
 
 | Notebook | Descripción |
 |---|---|
-| [01_limpieza_datos.ipynb](01_limpieza_datos.ipynb) | Carga del dataset original, diagnóstico y eliminación de valores faltantes, tratamiento de la variable objetivo y generación de `employees_cleaned.csv`. |
-| [02_analisis_exploratorio.ipynb](02_analisis_exploratorio.ipynb) | Análisis exploratorio completo: distribuciones, comparaciones por departamento/género/edad, correlaciones y conclusiones de negocio. |
-| [03_modelado.ipynb](03_modelado.ipynb) | Preprocesamiento de features, entrenamiento y evaluación de modelos de clasificación (Regresión Logística y Apilamiento), comparación de métricas y conclusiones. |
-| [utils.ipynb](utils.ipynb) | Accessor de pandas (`df.missing`) con funciones reutilizables para cuantificar y describir valores faltantes. |
+| [Notebooks/01_limpieza_datos.ipynb](Notebooks/01_limpieza_datos.ipynb) | Carga del dataset original, diagnóstico y eliminación de valores faltantes, tratamiento de la variable objetivo y generación de `data/employees_cleaned.csv`. |
+| [Notebooks/02_analisis_exploratorio.ipynb](Notebooks/02_analisis_exploratorio.ipynb) | Análisis exploratorio completo: distribuciones, comparaciones por departamento/género/edad, correlaciones y conclusiones de negocio. |
+| [Notebooks/03_modelado.ipynb](Notebooks/03_modelado.ipynb) | Preprocesamiento de features, entrenamiento y evaluación de modelos de clasificación (Regresión Logística y Apilamiento), comparación de métricas y conclusiones. |
+| [Notebooks/utils.ipynb](Notebooks/utils.ipynb) | Accessor de pandas (`df.missing`) con funciones reutilizables para cuantificar y describir valores faltantes. |
 
 ## Insights destacados
 
-Extraídos del análisis exploratorio ([02_analisis_exploratorio.ipynb](02_analisis_exploratorio.ipynb)):
+**¿Qué factores se asocian al cumplimiento de KPIs?**:
 
-- **El departamento es el factor explicativo dominante**: el cumplimiento de KPIs, el puntaje de capacitación y los premios varían fuertemente por departamento, pero apenas cambian según género o edad.
-- **Sales & Marketing es el área de mayor impacto potencial**: es el departamento más numeroso (4.599 empleados) pero con la menor tasa de cumplimiento de KPIs (~28%) y menor puntaje de capacitación (~50).
-- **63.8%** de los empleados no cumple con más del 80% de sus KPIs.
-- **Desbalance de género**: 70% hombres / 30% mujeres, más marcado aún en Sales & Marketing (80.7% hombres). Sin embargo, las mujeres muestran una tasa de cumplimiento de KPIs ligeramente superior (38.8%), lo que sugiere que el género no limita el desempeño pese a la disparidad numérica.
-- **Puntaje de capacitación bimodal**: ~50 puntos en áreas no técnicas (Sales & Marketing, HR) vs. ~84-85 en áreas técnicas (Analytics, R&D), reflejando una brecha estructural en desarrollo de competencias según el tipo de rol.
-- **Correlaciones lineales débiles**: solo edad-antigüedad (0.60, esperable) y calificación previa-KPIs (0.34, moderada) muestran relación lineal relevante, lo que sugiere que el desempeño no se explica bien por variables individuales simples y motiva el uso de modelos que consideren el departamento o relaciones no lineales.
+**1. El departamento es el factor explicativo dominante**
+El cumplimiento de KPIs varía fuertemente entre departamentos (Sales & Marketing, el más numeroso, tiene la tasa más baja; R&D la más alta), mientras que apenas cambia según género o edad.
+
+![Tasa de KPIs por departamento](outputs/tasa_kpis_por_departamento.png)
+
+**2. La calificación del año anterior es la variable con mayor correlación con el cumplimiento de KPIs**
+Con un coeficiente de 0.34, es la relación lineal más fuerte con la variable objetivo entre todas las variables numéricas (el resto de correlaciones son débiles).
+
+![Matriz de correlación](outputs/matriz_correlacion.png)
+
+**3. El género no limita el desempeño, pese al desbalance numérico**
+Aunque el 70% de los empleados son hombres, las mujeres muestran una tasa de cumplimiento de KPIs ligeramente superior (38.8%), lo que indica que el género no es un factor asociado al desempeño.
+
+![KPIs logrados por género](outputs/kpis_por_genero.png)
 
 ## Resultados del modelado
 
-Comparación de los dos modelos entrenados en [03_modelado.ipynb](03_modelado.ipynb):
+Comparación de los dos modelos entrenados en [Notebooks/03_modelado.ipynb](Notebooks/03_modelado.ipynb):
 
 | Modelo | Exactitud | Precisión | Recall | F1-score |
 |---|---|---|---|---|
@@ -120,11 +131,11 @@ Comparación de los dos modelos entrenados en [03_modelado.ipynb](03_modelado.ip
 
 3. Ejecuta los notebooks en orden desde Jupyter:
    ```bash
-   jupyter notebook
+   jupyter notebook Notebooks/
    ```
    Abre y corre `01_limpieza_datos.ipynb` → `02_analisis_exploratorio.ipynb` → `03_modelado.ipynb`.
 
-   > `01_limpieza_datos.ipynb` genera `employees_cleaned.csv`, que es el input de los notebooks siguientes.
+   > `01_limpieza_datos.ipynb` genera `data/employees_cleaned.csv`, que es el input de los notebooks siguientes.
 
 ## Limitaciones y próximos pasos
 
