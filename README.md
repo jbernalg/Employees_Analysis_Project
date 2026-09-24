@@ -1,6 +1,6 @@
 # Análisis y Predicción del Desempeño de Empleados
 
-Proyecto de ciencia de datos end-to-end sobre un dataset de ~15.400 empleados de una empresa, que abarca limpieza de datos, análisis exploratorio (EDA) y modelado predictivo para identificar qué factores se asocian al cumplimiento de KPIs y para predecir si un empleado los cumplirá.
+Proyecto de ciencia de datos sobre un dataset de aproximadamente 15.400 empleados de una empresa, que abarca limpieza de datos, análisis exploratorio (EDA) y modelado predictivo para identificar qué factores se asocian al cumplimiento de KPIs y para predecir si un empleado los cumplirá.
 
 ## Tabla de contenido
 
